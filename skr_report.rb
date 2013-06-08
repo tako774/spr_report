@@ -22,7 +22,7 @@ include TencoReport::HttpUtil
 require 'tenco_report/stdout_to_cp932_converter'
 
 # プログラム情報
-PROGRAM_VERSION = '0.02a'
+PROGRAM_VERSION = '0.03'
 PROGRAM_NAME = '綺録帖報告ツール'
 PAST_PROGRAM_NAME = '他ゲームの報告ツール'
 GAME_NAME = '東方心綺楼'
@@ -384,7 +384,7 @@ begin
         print "> "
         input = gets.strip.gsub("\"", "")
         if File.file?(input)
-          replay_config_path = input
+          replay_config_path = NKF.nkf('-Swxm0 --cp932', input)
           puts "リプレイファイル設定を完了しました。"
           puts "引き続き、報告処理を行います..."
           puts
@@ -499,8 +499,9 @@ begin
     puts "★リプレイファイル送信"
     if !is_send_replay then
       puts "リプレイファイル送信をしない設定のためスキップします。"
-    else  
-      unless File.file?(replay_config_path) then
+    else
+      replay_config_path_cp932 = NKF.nkf('-Wsxm0 --cp932', replay_config_path)
+      unless File.file?(replay_config_path_cp932) then
         puts "！#{replay_config_path} が見つかりません。リプレイファイル送信をスキップします。"
         is_warning_exist = true
       else
@@ -546,7 +547,7 @@ begin
           
         end
         
-        replay_files = get_replay_files(trackrecords, replay_config_path, send_replay_file_num)
+        replay_files = get_replay_files(trackrecords, replay_config_path_cp932, send_replay_file_num)
         if replay_files.length > 0 then
           send_replay(replay_files, game_id, account_name, account_password)
         else

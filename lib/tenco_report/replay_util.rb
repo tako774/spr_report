@@ -14,8 +14,9 @@ module TencoReport
     
     # 対戦結果に対応する対戦結果とリプレイファイルパスを取得
     # file_num を上限個数とする
-    def get_replay_files(trackrecords, replay_config_path, file_num)
-      replay_format = get_replay_format(replay_config_path)
+    def get_replay_files(trackrecords, replay_config_path_cp932, file_num)
+      replay_format = get_replay_format(replay_config_path_cp932)
+      #config ファイルの文字コードは SJIS
       #日付記号　%year %month %day
       #日付一括記号　%yymmdd %mmdd
       #時刻記号　%hour %min %sec
@@ -46,11 +47,10 @@ module TencoReport
             "%c2" => "*"
           }
           replay_file_pattern = replay_format.gsub(pattern) { |str| conversion[str] }
-          replay_file_pattern = "#{File.dirname(replay_config_path)}\\replay\\#{replay_file_pattern}*"
+          replay_file_pattern = "#{File.dirname(replay_config_path_cp932)}\\replay\\#{replay_file_pattern}*"
           replay_file_pattern.gsub!("\\", "/")
           replay_file_pattern.gsub!(/\*+/, "*")
-          replay_file_pattern_cp932 = NKF.nkf('-sWxm0 --cp932', replay_file_pattern)
-          Dir.glob(replay_file_pattern_cp932)
+          Dir.glob(replay_file_pattern)
         end
         
         tr_replay_files.flatten!.uniq!
@@ -117,9 +117,9 @@ module TencoReport
     private
 
     # ゲーム側のリプレイファイル名のフォーマット設定を取得
-    def get_replay_format(replay_config_path)
+    def get_replay_format(replay_config_path_cp932)
       replay_format = nil
-      File.open(replay_config_path, "r") do |io|
+      File.open(replay_config_path_cp932, "r") do |io|
         while (line = io.gets) do
           if line.strip =~ /\Afile_vs="?([^"]+)"?\z/ then
             replay_format = $1
