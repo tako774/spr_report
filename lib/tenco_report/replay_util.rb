@@ -16,7 +16,9 @@ module TencoReport
     # file_num を上限個数とする
     def get_replay_files(trackrecords, replay_config_path, file_num)
       replay_format = get_replay_format(replay_config_path)
-      #config ファイルの文字コードは SJIS
+      # config.ini は CP932 で記述されているので UTF-8 に一度変換
+      replay_format = NKF.nkf('-Swxm0 --cp932', replay_format)
+      
       #日付記号　%year %month %day
       #日付一括記号　%yymmdd %mmdd
       #時刻記号　%hour %min %sec
@@ -50,6 +52,7 @@ module TencoReport
           replay_file_pattern = "#{File.dirname(replay_config_path)}\\replay\\#{replay_file_pattern}*"
           replay_file_pattern.gsub!("\\", "/")
           replay_file_pattern.gsub!(/\*+/, "*")
+          # UTF-8 から SJIS へ
           replay_file_pattern = NKF.nkf('-Wsxm0 --cp932', replay_file_pattern)
           Dir.glob(replay_file_pattern)
         end
