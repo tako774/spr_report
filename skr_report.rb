@@ -547,7 +547,7 @@ begin
           
         end
         
-        replay_files = get_replay_files(trackrecords, replay_config_path_cp932, send_replay_file_num)
+        replay_files = get_replay_files(trackrecords, replay_config_path, send_replay_file_num)
         if replay_files.length > 0 then
           send_replay(replay_files, game_id, account_name, account_password)
         else
