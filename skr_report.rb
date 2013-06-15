@@ -22,7 +22,7 @@ include TencoReport::HttpUtil
 require 'tenco_report/stdout_to_cp932_converter'
 
 # プログラム情報
-PROGRAM_VERSION = '0.02b'
+PROGRAM_VERSION = '0.02c'
 PROGRAM_NAME = '綺録帖報告ツール'
 PAST_PROGRAM_NAME = '他ゲームの報告ツール'
 GAME_NAME = '東方心綺楼'
@@ -105,6 +105,12 @@ begin
   CLIENT_LATEST_VERSION_PATH = env['client']['latest_version']['path'].to_s
   CLIENT_SITE_URL = "http://#{env['client']['site']['host']}#{env['client']['site']['path']}"
 
+  ## オプション設定
+  opt = OptionParser.new
+  # 全件報告モード
+  opt.on('-a') {|v| is_all_report = true}
+  opt.parse! ARGV
+
   ### クライアント最新バージョンチェック ###
 
   def get_latest_version(latest_version_host, latest_version_path)
@@ -150,14 +156,6 @@ begin
   end
 
   ### メイン処理 ###
-
-  ## オプション設定
-  opt = OptionParser.new
-
-  # 全件報告モード
-  opt.on('-a') {|v| is_all_report = true}
-
-  opt.parse! ARGV
 
   ## アカウント設定（新規アカウント登録／既存アカウント設定）処理
   unless (account_name && account_name =~ ACCOUNT_NAME_REGEX) then
