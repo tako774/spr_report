@@ -32,29 +32,43 @@ module TencoReport
       trackrecords.shuffle.each do |tr|
         tr_time = Time.parse(tr['timestamp'])
         tr_replay_files = [tr_time - 15, tr_time, tr_time + 15].map do |time|
-          conversion = {
-            "%year"   => time.year.to_s[2..3],
-            "%month"  => sprintf("%02d", time.month),
-            "%day"    => sprintf("%02d", time.day),
-            "%yymm"   => time.year.to_s[2..3] + sprintf("%02d", time.month),
-            "%yymmdd" => time.year.to_s[2..3] + sprintf("%02d", time.month) + sprintf("%02d", time.day),
-            "%hour"   => sprintf("%02d", time.hour),
-            "%min"    => sprintf("%02d", time.min),
-            "%sec"    => "*", # 結果記録とリプレイファイルのタイムスタンプは7秒くらいはずれる
-            "%hhmm"   => sprintf("%02d", time.hour) + sprintf("%02d", time.min),
-            "%hhmmss" => sprintf("%02d", time.hour) + sprintf("%02d", time.min) + "*",
-            "%p1" => tr['p1name'],
-            "%p2" => tr['p2name'],
-            "%c1" => "*",
-            "%c2" => "*"
-          }
-          replay_file_pattern = replay_format.gsub(pattern) { |str| conversion[str] }
-          replay_file_pattern = "#{File.dirname(replay_config_path)}\\replay\\#{replay_file_pattern}*"
-          replay_file_pattern.gsub!("\\", "/")
-          replay_file_pattern.gsub!(/\*+/, "*")
-          # UTF-8 から SJIS へ
-          replay_file_pattern = NKF.nkf('-Wsxm0 --cp932', replay_file_pattern)
-          Dir.glob(replay_file_pattern)
+          # クライアントの場合、リプレイファイルは自身の情報がp2に入る
+          # 対戦結果記録ツールでは、常に自身の情報がp1に入る
+          # ホストでもクライアントでもリプレイファイルがとれるよう、
+          # p1とp2を入れ替えた対戦結果を元にしたリプレイファイルも検索する
+          tr1 = tr.clone
+          tr2 = tr.clone
+          tr2['p1name'] = tr['p2name']
+          tr2['p2name'] = tr['p1name']
+          tr2['p1id'] = tr['p2id']
+          tr2['p2id'] = tr['p1id']
+          tr2['p1win'] = tr['p2win']
+          tr2['p2win'] = tr['p1win']
+          [tr1, tr2].map do |tr|
+            conversion = {
+              "%year"   => time.year.to_s[2..3],
+              "%month"  => sprintf("%02d", time.month),
+              "%day"    => sprintf("%02d", time.day),
+              "%yymm"   => time.year.to_s[2..3] + sprintf("%02d", time.month),
+              "%yymmdd" => time.year.to_s[2..3] + sprintf("%02d", time.month) + sprintf("%02d", time.day),
+              "%hour"   => sprintf("%02d", time.hour),
+              "%min"    => sprintf("%02d", time.min),
+              "%sec"    => "*", # 結果記録とリプレイファイルのタイムスタンプは7秒くらいはずれる
+              "%hhmm"   => sprintf("%02d", time.hour) + sprintf("%02d", time.min),
+              "%hhmmss" => sprintf("%02d", time.hour) + sprintf("%02d", time.min) + "*",
+              "%p1" => tr['p1name'],
+              "%p2" => tr['p2name'],
+              "%c1" => "*",
+              "%c2" => "*"
+            }
+            replay_file_pattern = replay_format.gsub(pattern) { |str| conversion[str] }
+            replay_file_pattern = "#{File.dirname(replay_config_path)}\\replay\\#{replay_file_pattern}*"
+            replay_file_pattern.gsub!("\\", "/")
+            replay_file_pattern.gsub!(/\*+/, "*")
+            # UTF-8 から SJIS へ
+            replay_file_pattern = NKF.nkf('-Wsxm0 --cp932', replay_file_pattern)
+            Dir.glob(replay_file_pattern)
+          end
         end
         
         tr_replay_files.flatten!.uniq!
