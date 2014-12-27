@@ -1,2 +1,2 @@
-skr_report.exe -a
+spr_report.exe -a
 @pause
