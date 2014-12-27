@@ -34,7 +34,7 @@ DEFAULT_DATABASE_FILE_PATH = '../*.db' # データベースファイルパス
 
 # 設定
 TRACKRECORD_POST_SIZE = 250 # 一度に送信する対戦結果数
-DUPLICATION_LIMIT_TIME_SECONDS = 2 # タイムスタンプが何秒以内のデータを、重複データとみなすか
+DUPLICATION_LIMIT_TIME_SECONDS = 30 # タイムスタンプが何秒以内のデータを、重複データとみなすか
 ACCOUNT_NAME_REGEX = /\A[a-zA-Z0-9_]{1,32}\z/
 MAIL_ADDRESS_REGEX = /\A[\x01-\x7F]+@(([-a-z0-9]+\.)*[a-z]+|\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])\z/ # メールアドレスチェック用正規表現
 PASSWORD_REGEX = /\A[!-~]{8,16}\z/
