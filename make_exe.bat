@@ -1,5 +1,6 @@
-start /wait mkexy skr_report.rb
-type skr_report.exy.icon.txt >> skr_report.exy
-skr_report.exy
+rem uru 187
+rem pik use 187
+start /wait mkexy spr_report.rb
+type spr_report.exy.icon.txt >> spr_report.exy
 @pause
-exerb skr_report.exy 
+exerb spr_report.exy 
