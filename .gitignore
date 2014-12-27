@@ -1,8 +1,8 @@
 
 /config.yaml
 /error.txt
-/skr_report.exe
-/skr_report.exy
+/*.exe
+/*.exy
 /bin
 /images
 /last_report_trackrecord.xml
