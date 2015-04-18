@@ -37,7 +37,9 @@ TRACKRECORD_POST_SIZE = 250 # 一度に送信する対戦結果数
 DUPLICATION_LIMIT_TIME_SECONDS = 30 # タイムスタンプが何秒以内のデータを、重複データとみなすか
 ACCOUNT_NAME_REGEX = /\A[a-zA-Z0-9_]{1,32}\z/
 MAIL_ADDRESS_REGEX = /\A[\x01-\x7F]+@(([-a-z0-9]+\.)*[a-z]+|\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])\z/ # メールアドレスチェック用正規表現
-PASSWORD_REGEX = /\A[!-~]{8,16}\z/
+ACCOUNT_PASSWORD_BYTE_MIN = 8
+ACCOUNT_PASSWORD_BYTE_MAX = 255
+PASSWORD_REGEX = Regexp.new("\\A[\\x01-\\x7F]{#{ACCOUNT_PASSWORD_BYTE_MIN},#{ACCOUNT_PASSWORD_BYTE_MAX}}\\z")
 PLEASE_RETRY_FORCE_INSERT = "<Please Retry in Force-Insert Mode>"  # 強制インサートリトライのお願い文字列
 HTTP_REQUEST_HEADER = {"User-Agent" => "Tenco Report Tool/#{PROGRAM_VERSION} GAME ID #{game_id}"}
 RECORD_SW_NAME = '東方深秘録 対戦記録自動集計プログラム（仮' # 対戦記録ソフトウェア名
@@ -208,7 +210,7 @@ begin
         
         # パスワード入力
         loop do
-          puts "パスワードを入力してください（半角英数記号。8～16字以内。アカウント名と同一禁止。）"
+          puts "パスワードを入力してください（半角英数記号。#{ACCOUNT_PASSWORD_BYTE_MIN}～#{ACCOUNT_PASSWORD_BYTE_MAX}字以内。アカウント名と同一禁止。）"
           print "パスワード> "
           input = gets.strip
           if input =~ PASSWORD_REGEX then
@@ -326,7 +328,7 @@ begin
           input = gets.strip
           if (account_password == Digest::SHA1.hexdigest(input)) then
             if input !~ PASSWORD_REGEX then
-              # puts "パスワードは、8～16文字以内が推奨です"
+              # puts "パスワードは、#{ACCOUNT_PASSWORD_BYTE_MIN}～#{ACCOUNT_PASSWORD_BYTE_MAX}文字以内が推奨です"
               # TODO: パスワード変更ウィザード
             end
             puts
