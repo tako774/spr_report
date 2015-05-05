@@ -447,10 +447,10 @@ begin
     is_warning_exist = true if is_read_trackrecord_warning
   else
     raise <<-MSG
-#{load_config_file} に設定された#{RECORD_SW_NAME}データベースファイルが見つかりません。
+#{RECORD_SW_NAME}データベースファイルが見つかりません。
 ・#{PROGRAM_NAME}のインストール場所が正しいかどうか、確認してください
 　デフォルト設定の場合、#{RECORD_SW_NAME}フォルダに、#{PROGRAM_NAME}をフォルダごとおいてください。
-・#{load_config_file} を変更した場合、設定が正しいかどうか、確認してください
+・#{save_config_file} を変更した場合、設定が正しいかどうか、確認してください
     MSG
   end
 
