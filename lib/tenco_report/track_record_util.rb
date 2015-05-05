@@ -199,9 +199,9 @@ module TencoReport
       return xml.to_s
     end
     
-    # 緋行跡/天則観のタイムスタンプ (FILETIME)を ISO8601 形式に変換
+    # 戦績ツールのタイムスタンプ (FILETIME)を ISO8601 形式に変換
     # FILETIME は 1601年1月1日からの100ナノ秒単位での時間
-    # 緋行跡/天則観はローカル時刻を取得しているので、ローカルの時刻オフセットをつける
+    # 戦績ツールはローカル時刻を取得しているので、ローカルの時刻オフセットをつける
     def filetime_to_iso8601(filetime)
       # DateTime モジュールだと計算精度が低かったので Time モジュールを利用
       if filetime then
