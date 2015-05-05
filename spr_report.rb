@@ -23,7 +23,7 @@ require 'tenco_report/stdout_to_cp932_converter'
 
 # プログラム情報
 PROGRAM_VERSION = '0.00'
-PROGRAM_NAME = '東方深秘録 対戦記録自動集計プログラム（仮）報告ツール'
+PROGRAM_NAME = '辺獄録'
 PAST_PROGRAM_NAME = '他ゲーム（緋想天／非想天則／心綺楼）の報告ツール'
 GAME_NAME = '東方深秘録'
 GAME_REPLAY_CONFIG_FILE_NAME = 'config.ini'
