@@ -25,7 +25,7 @@ require 'tenco_report/stdout_to_cp932_converter'
 
 # プログラム情報
 PROGRAM_VERSION = '0.00'
-PROGRAM_NAME = '辺獄録'
+PROGRAM_NAME = '辺獄録報告ツール'
 PAST_PROGRAM_NAME = '他ゲーム（緋想天／非想天則／心綺楼）の報告ツール'
 GAME_NAME = '東方深秘録'
 GAME_REPLAY_CONFIG_FILE_NAME = 'config.ini'
@@ -44,7 +44,7 @@ ACCOUNT_PASSWORD_BYTE_MAX = 255
 PASSWORD_REGEX = Regexp.new("\\A[\\x01-\\x7F]{#{ACCOUNT_PASSWORD_BYTE_MIN},#{ACCOUNT_PASSWORD_BYTE_MAX}}\\z")
 PLEASE_RETRY_FORCE_INSERT = "<Please Retry in Force-Insert Mode>"  # 強制インサートリトライのお願い文字列
 HTTP_REQUEST_HEADER = {"User-Agent" => "Tenco Report Tool/#{PROGRAM_VERSION} GAME ID #{game_id}"}
-RECORD_SW_NAME = '東方深秘録 対戦記録自動集計プログラム（仮' # 対戦記録ソフトウェア名
+RECORD_SW_NAME = '辺獄録' # 対戦記録ソフトウェア名
 DB_TR_TABLE_NAME = 'trackrecord145' # DBの対戦結果テーブル名
 WEB_SERVICE_NAME = 'Tenco!'  # サーバ側のサービス名
 
