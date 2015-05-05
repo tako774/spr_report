@@ -15,10 +15,12 @@ require 'tenco_report/config_util'
 include TencoReport::ConfigUtil
 require 'tenco_report/track_record_util'
 include TencoReport::TrackRecordUtil
+=begin
 require 'tenco_report/replay_util'
 include TencoReport::ReplayUtil
 require 'tenco_report/http_util'
 include TencoReport::HttpUtil
+=end
 require 'tenco_report/stdout_to_cp932_converter'
 
 # プログラム情報
@@ -87,13 +89,17 @@ begin
   env    = load_config(env_file)
 
   config['account'] ||= {}
-  config['database'] ||= {}
-  config['replay'] ||= {}
   account_name = config['account']['name'].to_s || ''
   account_password = config['account']['password'].to_s || ''
+
+  config['database'] ||= {}
   db_file_path = config['database']['file_path'].to_s || DEFAULT_DATABASE_FILE_PATH
+  
+=begin
+  config['replay'] ||= {}
   replay_config_path = config['replay']['config_path'] || ''
   is_send_replay = config['replay']['is_send_replay']
+=end
 
   SERVER_TRACK_RECORD_HOST = env['server']['track_record']['host'].to_s
   SERVER_TRACK_RECORD_PATH = env['server']['track_record']['path'].to_s
@@ -353,6 +359,7 @@ begin
     sleep 2
   end ## アカウント設定
 
+=begin
   ## リプレイファイル設定
   if (is_send_replay.nil?) then
     
@@ -399,7 +406,8 @@ begin
     save_config(save_config_file, config)
     
   end
-  
+=end
+
   ## 登録済みの最終対戦結果時刻を取得する
   unless is_all_report then
     puts "★登録済みの最終対戦時刻を取得"
@@ -493,7 +501,8 @@ begin
       end
     end
   end
-  
+
+=begin
   ## リプレイファイル送信
   if trackrecords.length != 0  then
     puts "★リプレイファイル送信"
@@ -557,6 +566,7 @@ begin
     end
   
   end
+=end
 
   # 設定ファイル更新
   save_config(save_config_file, config)
