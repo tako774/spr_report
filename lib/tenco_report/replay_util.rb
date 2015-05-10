@@ -25,9 +25,10 @@ module TencoReport
       #時刻一括記号　%hhmmss %hhmm
       #使用プロファイル　%p1 %p2
       #使用キャラクター　%c1 %c2
+      #バージョン記号  　%ver
       #日付記号　%y %m %d (天則:実装しない)
       #時刻記号　%h %min %sec (天則:実装しない)
-      pattern = /%(year|month|day|yymmdd|yymm|hour|min|sec|hhmmss|hhmm|p1|p2|c1|c2)/
+      pattern = /%(year|month|day|yymmdd|yymm|hour|min|sec|hhmmss|hhmm|p1|p2|c1|c2|ver)/
       replay_files = []
       trackrecords.shuffle.each do |tr|
         tr_time = Time.parse(tr['timestamp'])
@@ -56,10 +57,11 @@ module TencoReport
               "%sec"    => "*", # 結果記録とリプレイファイルのタイムスタンプは7秒くらいはずれる
               "%hhmm"   => sprintf("%02d", time.hour) + sprintf("%02d", time.min),
               "%hhmmss" => sprintf("%02d", time.hour) + sprintf("%02d", time.min) + "*",
-              "%p1" => tr['p1name'],
-              "%p2" => tr['p2name'],
-              "%c1" => "*",
-              "%c2" => "*"
+              "%p1"  => tr['p1name'],
+              "%p2"  => tr['p2name'],
+              "%c1"  => "*",
+              "%c2"  => "*",
+              "%ver" => "*"
             }
             replay_file_pattern = replay_format.gsub(pattern) { |str| conversion[str] }
             replay_file_pattern = "#{File.dirname(replay_config_path)}\\replay\\#{replay_file_pattern}*"
