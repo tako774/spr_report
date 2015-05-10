@@ -15,23 +15,21 @@ require 'tenco_report/config_util'
 include TencoReport::ConfigUtil
 require 'tenco_report/track_record_util'
 include TencoReport::TrackRecordUtil
-=begin
 require 'tenco_report/replay_util'
 include TencoReport::ReplayUtil
 require 'tenco_report/http_util'
 include TencoReport::HttpUtil
-=end
 require 'tenco_report/stdout_to_cp932_converter'
 
 # プログラム情報
 PROGRAM_VERSION = '0.00'
-PROGRAM_NAME = '辺獄録報告ツール'
+PROGRAM_NAME = '辺獄録（体験版用）報告ツール'
 PAST_PROGRAM_NAME = '他ゲーム（緋想天／非想天則／心綺楼）の報告ツール'
-GAME_NAME = '東方深秘録'
+GAME_NAME = '東方深秘録（体験版）'
 GAME_REPLAY_CONFIG_FILE_NAME = 'config.ini'
 
 # デフォルト値
-game_id = 6 # ゲームID
+game_id = 5 # ゲームID
 DEFAULT_DATABASE_FILE_PATH = '../*.db' # データベースファイルパス
 
 # 設定
@@ -44,8 +42,8 @@ ACCOUNT_PASSWORD_BYTE_MAX = 255
 PASSWORD_REGEX = Regexp.new("\\A[\\x01-\\x7F]{#{ACCOUNT_PASSWORD_BYTE_MIN},#{ACCOUNT_PASSWORD_BYTE_MAX}}\\z")
 PLEASE_RETRY_FORCE_INSERT = "<Please Retry in Force-Insert Mode>"  # 強制インサートリトライのお願い文字列
 HTTP_REQUEST_HEADER = {"User-Agent" => "Tenco Report Tool/#{PROGRAM_VERSION} GAME ID #{game_id}"}
-RECORD_SW_NAME = '辺獄録' # 対戦記録ソフトウェア名
-DB_TR_TABLE_NAME = 'trackrecord145' # DBの対戦結果テーブル名
+RECORD_SW_NAME = '辺獄録（体験版用）' # 対戦記録ソフトウェア名
+DB_TR_TABLE_NAME = 'trackrecord145_trial' # DBの対戦結果テーブル名
 WEB_SERVICE_NAME = 'Tenco!'  # サーバ側のサービス名
 
 # ログファイルパス
@@ -95,11 +93,9 @@ begin
   config['database'] ||= {}
   db_file_path = config['database']['file_path'].to_s || DEFAULT_DATABASE_FILE_PATH
   
-=begin
   config['replay'] ||= {}
   replay_config_path = config['replay']['config_path'] || ''
   is_send_replay = config['replay']['is_send_replay']
-=end
 
   SERVER_TRACK_RECORD_HOST = env['server']['track_record']['host'].to_s
   SERVER_TRACK_RECORD_PATH = env['server']['track_record']['path'].to_s
@@ -359,7 +355,6 @@ begin
     sleep 2
   end ## アカウント設定
 
-=begin
   ## リプレイファイル設定
   if (is_send_replay.nil?) then
     
@@ -406,7 +401,6 @@ begin
     save_config(save_config_file, config)
     
   end
-=end
 
   ## 登録済みの最終対戦結果時刻を取得する
   unless is_all_report then
@@ -502,7 +496,6 @@ begin
     end
   end
 
-=begin
   ## リプレイファイル送信
   if trackrecords.length != 0  then
     puts "★リプレイファイル送信"
@@ -566,7 +559,6 @@ begin
     end
   
   end
-=end
 
   # 設定ファイル更新
   save_config(save_config_file, config)
