@@ -26,8 +26,6 @@ module TencoReport
       #使用プロファイル　%p1 %p2
       #使用キャラクター　%c1 %c2
       #バージョン記号  　%ver
-      #日付記号　%y %m %d (天則:実装しない)
-      #時刻記号　%h %min %sec (天則:実装しない)
       pattern = /%(year|month|day|yymmdd|yymm|hour|min|sec|hhmmss|hhmm|p1|p2|c1|c2|ver)/
       replay_files = []
       trackrecords.shuffle.each do |tr|
@@ -153,7 +151,8 @@ module TencoReport
     end
         
     # 元の圧縮された状態でのメタデータの長さを取得する
-    # 9byte TFRAP 00 65 00 00 00
+    # 4byte TFRAP
+    # 5byte unknown data 00 02 24 16 00
     # 4byte first_block_length (= compressed data length + 8)
     # 4byte compressed meta data length
     # 4byte uncompressed meta data length
@@ -193,7 +192,7 @@ module TencoReport
           if key == "icon_dump" then
             # <width>,<height>,<unknown digit>,<body>
             if /\A([^,]+,[^,]+,[^,]+,)(.+)\z/ =~ data[idx, len] then
-              # if masked with other byte, th135 may crash
+              # if masked with other byte, th145 may crash
               data[idx, len] = $1 + "\x41".force_encoding('ASCII-8BIT') * $2.bytesize
             else
               # mask failed?
