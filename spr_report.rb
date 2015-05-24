@@ -7,6 +7,7 @@ Net::HTTP.version_1_2
 require 'rexml/document'
 require 'time'
 require 'digest/sha1'
+require 'highline'
 require 'optparse'
 
 $LOAD_PATH.unshift 'lib'
@@ -60,8 +61,12 @@ is_read_trackrecord_warning = false # 対戦結果読み込み時に警告があ
 is_warning_exist = false # 警告メッセージがあるかどうか
 send_replay_file_num = 1 # 送るリプレイファイル数
 
-puts "*** #{PROGRAM_NAME} ***"
-puts "ver.#{PROGRAM_VERSION}\n\n"
+# highline object
+HighLine.track_eof = false
+hl = HighLine.new
+
+print "*** #{PROGRAM_NAME} ***"
+puts  "ver.#{PROGRAM_VERSION}\n\n"
 
 begin
 
@@ -133,8 +138,9 @@ begin
       # puts "！最新バージョンの取得に失敗しました。"
       # puts "スキップして続行します。"
     when latest_version > PROGRAM_VERSION then
-      puts "★新しいバージョンの#{PROGRAM_NAME}が公開されています。（ver.#{latest_version}）"
-      puts "ブラウザを開いて確認しますか？（Nを入力するとスキップ）"
+      print hl.color("★", :white, :on_yellow, :bold)
+      puts  hl.color"新しいバージョンの#{PROGRAM_NAME}が公開されています。"
+      puts  "ブラウザを開いて確認しますか？（Nを入力するとスキップ）"
       print "> "
       case gets[0..0]
       when "N" then
@@ -150,7 +156,7 @@ begin
     end
 
   rescue => ex
-    puts "！クライアント最新バージョン自動チェック中にエラーが発生しました。"
+    puts hl.color("！クライアント最新バージョン自動チェック中にエラーが発生しました。", :white, :on_yellow, :bold)
     puts ex.class
     puts ex.to_s
     # puts ex.backtrace.join("\n")
@@ -191,7 +197,8 @@ begin
     # 新規アカウント登録
     if is_new_account then
 
-      puts "★新規 #{WEB_SERVICE_NAME} アカウント登録\n\n"
+      puts "★新規 #{WEB_SERVICE_NAME} アカウント登録"
+      puts "\n\n"
 
       loop do
 
@@ -213,13 +220,13 @@ begin
         # パスワード入力
         loop do
           puts "パスワードを入力してください（半角英数記号。#{ACCOUNT_PASSWORD_BYTE_MIN}～#{ACCOUNT_PASSWORD_BYTE_MAX}字以内。アカウント名と同一禁止。）"
-          print "パスワード> "
-          input = gets.strip
-          if input =~ PASSWORD_REGEX then
+          input = hl.ask('パスワード> ') { |q| q.echo = false }
+          input.strip!
+          if (input =~ PASSWORD_REGEX && input != account_name)then
             raw_account_password = input
             # パスワード確認入力
-            print "パスワード（確認）> "
-            input = gets.strip
+            input = hl.ask('パスワード（確認）> ') { |q| q.echo = false }
+            input.strip!
             if (raw_account_password == input) then
               account_password = Digest::SHA1.hexdigest(raw_account_password)
               puts
@@ -321,13 +328,13 @@ begin
       # パスワード入力
       loop do
         puts "パスワードを入力してください"
-        print "パスワード> "
-        input = gets.strip
+        input = hl.ask('パスワード> ') { |q| q.echo = false }
+        input.strip!
         if input != "" then
           account_password = Digest::SHA1.hexdigest(input)
           # パスワード確認入力
-          print "パスワード（確認）> "
-          input = gets.strip
+          input = hl.ask('パスワード（確認）> ') { |q| q.echo = false }
+          input.strip!
           if (account_password == Digest::SHA1.hexdigest(input)) then
             if input !~ PASSWORD_REGEX then
               # puts "パスワードは、#{ACCOUNT_PASSWORD_BYTE_MIN}～#{ACCOUNT_PASSWORD_BYTE_MAX}文字以内が推奨です"
