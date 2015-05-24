@@ -138,8 +138,7 @@ begin
       # puts "！最新バージョンの取得に失敗しました。"
       # puts "スキップして続行します。"
     when latest_version > PROGRAM_VERSION then
-      print hl.color("★", :white, :on_yellow, :bold)
-      puts  hl.color"新しいバージョンの#{PROGRAM_NAME}が公開されています。"
+      puts  "★新しいバージョンの#{PROGRAM_NAME}が公開されています。"
       puts  "ブラウザを開いて確認しますか？（Nを入力するとスキップ）"
       print "> "
       case gets[0..0]
@@ -156,7 +155,7 @@ begin
     end
 
   rescue => ex
-    puts hl.color("！クライアント最新バージョン自動チェック中にエラーが発生しました。", :white, :on_yellow, :bold)
+    puts "！クライアント最新バージョン自動チェック中にエラーが発生しました。"
     puts ex.class
     puts ex.to_s
     # puts ex.backtrace.join("\n")
