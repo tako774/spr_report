@@ -23,7 +23,7 @@ include TencoReport::HttpUtil
 require 'tenco_report/stdout_to_cp932_converter'
 
 # プログラム情報
-PROGRAM_VERSION = '0.00'
+PROGRAM_VERSION = '0.00a'
 PROGRAM_NAME = '辺獄録報告ツール'
 PAST_PROGRAM_NAME = '他ゲーム（緋想天／非想天則／心綺楼）の報告ツール'
 GAME_NAME = '東方深秘録'
