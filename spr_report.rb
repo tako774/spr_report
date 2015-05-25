@@ -23,7 +23,7 @@ include TencoReport::HttpUtil
 require 'tenco_report/stdout_to_cp932_converter'
 
 # プログラム情報
-PROGRAM_VERSION = '0.00a'
+PROGRAM_VERSION = '0.00b'
 PROGRAM_NAME = '辺獄録報告ツール'
 PAST_PROGRAM_NAME = '他ゲーム（緋想天／非想天則／心綺楼）の報告ツール'
 GAME_NAME = '東方深秘録'
@@ -219,6 +219,7 @@ begin
         # パスワード入力
         loop do
           puts "パスワードを入力してください（半角英数記号。#{ACCOUNT_PASSWORD_BYTE_MIN}～#{ACCOUNT_PASSWORD_BYTE_MAX}字以内。アカウント名と同一禁止。）"
+          puts "入力した文字は画面に表示されません"
           input = hl.ask('パスワード> ') { |q| q.echo = false }
           input.strip!
           if (input =~ PASSWORD_REGEX && input != account_name)then
@@ -327,6 +328,7 @@ begin
       # パスワード入力
       loop do
         puts "パスワードを入力してください"
+        puts "入力した文字は画面に表示されません"
         input = hl.ask('パスワード> ') { |q| q.echo = false }
         input.strip!
         if input != "" then
