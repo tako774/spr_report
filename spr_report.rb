@@ -219,7 +219,7 @@ begin
         # パスワード入力
         loop do
           puts "パスワードを入力してください（半角英数記号。#{ACCOUNT_PASSWORD_BYTE_MIN}～#{ACCOUNT_PASSWORD_BYTE_MAX}字以内。アカウント名と同一禁止。）"
-          puts "入力した文字は画面に表示されません"
+          puts "（入力した文字は画面に表示されません）"
           input = hl.ask('パスワード> ') { |q| q.echo = false }
           input.strip!
           if (input =~ PASSWORD_REGEX && input != account_name)then
@@ -328,7 +328,7 @@ begin
       # パスワード入力
       loop do
         puts "パスワードを入力してください"
-        puts "入力した文字は画面に表示されません"
+        puts "（入力した文字は画面に表示されません）"
         input = hl.ask('パスワード> ') { |q| q.echo = false }
         input.strip!
         if input != "" then
